@@ -1,0 +1,69 @@
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <style>
+        html, body{
+            width: 100%;
+            height: 100%;
+        }
+        #map{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="area">
+        <select class="custom-select d-block w-100" id="citySelect" required="">
+            <option value="">請選擇縣市</option>
+                <option value="C">基隆市</option>
+                <option value="A">臺北市</option>
+                <option value="F">新北市</option>
+                <option value="H">桃園市</option>
+                <option value="O">新竹市</option>
+                <option value="J">新竹縣</option>
+                <option value="K">苗栗縣</option>
+                <option value="B">臺中市</option>
+                <option value="N">彰化縣</option>
+                <option value="M">南投縣</option>
+                <option value="P">雲林縣</option>
+                <option value="I">嘉義市</option>
+                <option value="Q">嘉義縣</option>
+                <option value="D">臺南市</option>
+                <option value="E">高雄市</option>
+                <option value="T">屏東縣</option>
+                <option value="V">臺東縣</option>
+                <option value="U">花蓮縣</option>
+                <option value="G">宜蘭縣</option>
+                <option value="X">澎湖縣</option>
+                <option value="W">金門縣</option>
+                <option value="Z">連江縣</option>
+        </select>
+        <select id="townSelect" class="custom-select d-block w-100" name="town" required="">
+
+        </select>
+    </div>
+    <div id="map"></div>
+</body>
+<script>
+map = L.map('map').setView([-25.363, 131.044], 5);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	attribution: '<a href="https://www.openstreetmap.org/">OSM</a>',
+	maxZoom: 18,
+}).addTo(map);
+var marker = L.marker([-25.363, 131.044]);
+marker.addTo(map);
+</script>
+<script>
+// Attach a submit handler to the form
+$( "#citySelect" ).change(function( event ) {
+
+ // Get some values from elements on the page:
+ var $form = $( this ),
+   term = $form.find('option:selected').text(),
+   url = './TownList.json';
+   data=$.getJSON(url)
+   console.log(data)
+});
+</script>
