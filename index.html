@@ -28,6 +28,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     ></script>
     <script src="js/bootstrap3-typeahead.min.js"></script>
     <script src="js/get-distance.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"
+    ></script>
     <!-- //js files -->
 
     <!-- css files -->
@@ -90,301 +94,63 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="banner" id="home">
       <div class="layer">
         <div class="container">
-          <div class="row">
-            <div class="col-md-6 banner-text-w3ls">
-              <!-- banner slider-->
-              <div class="csslider infinity" id="slider1">
-                <input
-                  type="radio"
-                  name="slides"
-                  checked="checked"
-                  id="slides_1"
-                />
-                <input type="radio" name="slides" id="slides_2" />
-                <input type="radio" name="slides" id="slides_3" />
-                <ul class="banner_slide_bg">
-                  <li>
-                    <div class="container-fluid">
-                      <div class="w3ls_banner_txt">
-                        <h3 class="b-w3ltxt text-capitalize mt-md-4">china</h3>
-                        <h4>
-                          <span class="fa fa-ils" aria-hidden="true"></span>from
-                        </h4>
-                        <p>
-                          <span class="fa fa-usd" aria-hidden="true"></span>1000
-                        </p>
-                        <p></p>
-                      </div>
+          <div class="col-md-12 banner-text-w3ls">
+            <!-- banner slider-->
+            <div class="csslider infinity" id="slider1">
+              <input
+                type="radio"
+                name="slides"
+                checked="checked"
+                id="slides_1"
+              />
+              <ul class="banner_slide_bg">
+                <li>
+                  <div class="container-fluid">
+                    <div class="w3ls_banner_txt">
+                      <h4>
+                        <span class="fa fa-ils" aria-hidden="true"></span>
+                      </h4>
                     </div>
-                  </li>
-                </ul>
-                <div class="navigation">
-                  <div>
-                    <label for="slides_1"></label>
-                    <label for="slides_2"></label>
-                    <label for="slides_3"></label>
                   </div>
-                </div>
-              </div>
-              <!-- //banner slider-->
+                </li>
+              </ul>
             </div>
-            <div class="col-md-6 px-lg-3 px-0">
-              <div class="banner-form-w3 ml-lg-5">
-                <div class="padding">
-                  <form action="#">
-                    <h5 class="mb-3">想要去哪裡? 快搜尋看看</h5>
-                    <div class="form-style-w3layout">
-                      <input
-                        placeholder="想去哪兒? 試試看搜尋:台東火車站"
-                        id="hotelSearchInput"
-                        type="text"
-                        required=""
-                        data-provide="typeahead"
-                        autocomplete="off"
-                      />
-                      <button
-                        Class="btn"
-                        onclick="gethotelList(globalSelected)"
-                      >
-                        搜尋
-                      </button>
-                    </div>
-                  </form>
-                </div>
+            <!-- //banner slider-->
+          </div>
+          <div class="col-md-12 px-lg-3 px-0">
+            <div class="banner-form-w3">
+              <div class="padding">
+                <form action="#" method="get">
+                  <h5 class="mb-3">想要去哪裡? 快搜尋看看</h5>
+                  <div class="form-style-w3layout">
+                    <input
+                      placeholder="輸入想去的地點"
+                      id="hotelLocationSearch"
+                      type="text"
+                      required=""
+                      data-provide="typeahead"
+                      autocomplete="off"
+                    />
+                    <input
+                      placeholder="成人人數"
+                      id="hotelAdultSearch"
+                      type="number"
+                      min="1"
+                      max="6"
+                      required=""
+                      autocomplete="off"
+                    />
+                    <button Class="btn" onclick="gethotelList(globalSelected);">
+                      搜尋
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!--list-->
-    <div class="row">
-      <aside class="col-sm-3">
-        <div class="card card-filter">
-          <article class="card-group-item">
-            <header class="card-header">
-              <a
-                class=""
-                aria-expanded="true"
-                href="#"
-                data-toggle="collapse"
-                data-target="#collapse22"
-              >
-                <i class="icon-action fa fa-chevron-down"></i>
-                <h6 class="title">By Category</h6>
-              </a>
-            </header>
-            <div style="" class="filter-content collapse show" id="collapse22">
-              <div class="card-body">
-                <form class="pb-3">
-                  <div class="input-group">
-                    <input
-                      class="form-control"
-                      placeholder="Search"
-                      type="text"
-                    />
-                    <div class="input-group-append">
-                      <button class="btn btn-primary" type="button">
-                        <i class="fa fa-search"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-
-                <ul class="list-unstyled list-lg">
-                  <li>
-                    <a href="#"
-                      >Cras justo odio
-                      <span class="float-right badge badge-light round"
-                        >142</span
-                      >
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      >Dapibus ac facilisis
-                      <span class="float-right badge badge-light round">3</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      >Morbi leo risus
-                      <span class="float-right badge badge-light round"
-                        >32</span
-                      >
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      >Another item
-                      <span class="float-right badge badge-light round"
-                        >12</span
-                      >
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <!-- card-body.// -->
-            </div>
-            <!-- collapse .// -->
-          </article>
-          <!-- card-group-item.// -->
-          <article class="card-group-item">
-            <header class="card-header">
-              <a href="#" data-toggle="collapse" data-target="#collapse33">
-                <i class="icon-action fa fa-chevron-down"></i>
-                <h6 class="title">By Price</h6>
-              </a>
-            </header>
-            <div class="filter-content collapse show" id="collapse33">
-              <div class="card-body">
-                <input
-                  type="range"
-                  class="custom-range"
-                  min="0"
-                  max="100"
-                  name=""
-                />
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label>Min</label>
-                    <input
-                      class="form-control"
-                      placeholder="$0"
-                      type="number"
-                    />
-                  </div>
-                  <div class="form-group text-right col-md-6">
-                    <label>Max</label>
-                    <input
-                      class="form-control"
-                      placeholder="$1,0000"
-                      type="number"
-                    />
-                  </div>
-                </div>
-                <!-- form-row.// -->
-                <button class="btn btn-block btn-outline-primary">Apply</button>
-              </div>
-              <!-- card-body.// -->
-            </div>
-            <!-- collapse .// -->
-          </article>
-          <!-- card-group-item.// -->
-          <article class="card-group-item">
-            <header class="card-header">
-              <a href="#" data-toggle="collapse" data-target="#collapse44">
-                <i class="icon-action fa fa-chevron-down"></i>
-                <h6 class="title">By Feature</h6>
-              </a>
-            </header>
-            <div class="filter-content collapse show" id="collapse44">
-              <div class="card-body">
-                <form>
-                  <label class="form-check">
-                    <input class="form-check-input" value="" type="checkbox" />
-                    <span class="form-check-label">
-                      <span class="float-right badge badge-light round">5</span>
-                      Samsung
-                    </span>
-                  </label>
-                  <!-- form-check.// -->
-                  <label class="form-check">
-                    <input class="form-check-input" value="" type="checkbox" />
-                    <span class="form-check-label">
-                      <span class="float-right badge badge-light round"
-                        >13</span
-                      >
-                      Mersedes Benz
-                    </span>
-                  </label>
-                  <!-- form-check.// -->
-                  <label class="form-check">
-                    <input class="form-check-input" value="" type="checkbox" />
-                    <span class="form-check-label">
-                      <span class="float-right badge badge-light round"
-                        >12</span
-                      >
-                      Nissan Altima
-                    </span>
-                  </label>
-                  <!-- form-check.// -->
-                  <label class="form-check">
-                    <input class="form-check-input" value="" type="checkbox" />
-                    <span class="form-check-label">
-                      <span class="float-right badge badge-light round"
-                        >32</span
-                      >
-                      Another Brand
-                    </span>
-                  </label>
-                  <!-- form-check.// -->
-                </form>
-              </div>
-              <!-- card-body.// -->
-            </div>
-            <!-- collapse .// -->
-          </article>
-          <!-- card-group-item.// -->
-        </div>
-        <!-- card.// -->
-      </aside>
-      <main class="col-sm-9">
-        <article class="card card-product">
-          <div class="card-body">
-            <div class="row">
-              <aside class="col-sm-3">
-                <div class="img-wrap"><img src="images/items/1.jpg" /></div>
-              </aside>
-              <!-- col.// -->
-              <article class="col-sm-6">
-                <h4 class="title">Ut wisi enim ad minim veniam</h4>
-                <!-- rating-wrap.// -->
-                <p>
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit, Ut
-                  wisi enim ad minim veniam
-                </p>
-                <dl class="dlist-align">
-                  <dt>Color</dt>
-                  <dd>Black and white</dd>
-                </dl>
-                <!-- item-property-hor .// -->
-                <dl class="dlist-align">
-                  <dt>Material</dt>
-                  <dd>Syntetic, wooden</dd>
-                </dl>
-                <!-- item-property-hor .// -->
-                <dl class="dlist-align">
-                  <dt>Delivery</dt>
-                  <dd>Russia, USA, and Europe</dd>
-                </dl>
-                <!-- item-property-hor .// -->
-              </article>
-              <!-- col.// -->
-              <aside class="col-sm-3 border-left">
-                <div class="action-wrap">
-                  <div class="price-wrap h4">
-                    <span class="price"> $245 </span>
-                  </div>
-                  <!-- info-price-detail // -->
-                  <br />
-                  <p>
-                    <a href="#" class="btn btn-primary"> Details </a>
-                  </p>
-                </div>
-                <!-- action-wrap.// -->
-              </aside>
-              <!-- col.// -->
-            </div>
-            <!-- row.// -->
-          </div>
-          <!-- card-body .// -->
-        </article>
-        <!-- card product .// -->
-      </main>
-    </div>
-    <!--\\list-->
     <!-- map -->
     <div class="map p-2">
       <iframe
@@ -392,7 +158,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       ></iframe>
     </div>
     <!-- //map -->
-
+    <!--list-->
+    <main class="col-sm-12 hotel-list" id="hotel-list"></main>
+    <!--\\list-->
     <!-- //banner -->
     <!-- banner-bottom -->
     <section class="some-content py-5" id="about">
@@ -438,8 +206,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   </body>
   <script>
     var globalSelected;
+    var globalSelectedList;
+    Handlebars.registerHelper("ImgNameRe", context => {
+      result = /[\w]+.(jpg|png)/i.exec(context);
+      if (result && result.length > 0) return result[0];
+    });
     $(document).ready(function() {
-      $("#hotelSearchInput").typeahead({
+      $("#hotelLocationSearch").typeahead({
         source: (query, process) => {
           $.get(
             "https://nominatim.openstreetmap.org/search?format=json&accept-language=zh-tw&countrycodes=tw&q=" +
@@ -463,12 +236,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       });
     });
     function gethotelList(item) {
+      let adults = $("#hotelAdultSearch").val();
       $.get(
         "json/hotel.json",
         response => {
+          globalSelectedList = [];
           for (towns in response) {
             for (town in response[towns]) {
-              response[towns][town].forEach(hotel => {
+              response[towns][town].forEach((hotel, idx, arr) => {
                 if (hotel.hasOwnProperty("location")) {
                   dist = distance(
                     item.lat,
@@ -477,7 +252,48 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     hotel.location.lng,
                     "K"
                   );
-                  if (dist < 20) console.log(hotel);
+                  hotel.distance = dist.toFixed(1);
+                  if (
+                    dist < 10 &&
+                    hotel.hasOwnProperty("location") &&
+                    hotel.AgodaID > 0
+                  ) {
+                    $.get(
+                      "rooms/" + hotel.AgodaID + ".json",
+                      rooms => {
+                        if (rooms.length > 0) {
+                          fitRooms = [];
+                          rooms.forEach((room, index, array) => {
+                            if (room.adults >= adults) fitRooms.push(room);
+                            if (index === array.length - 1) {
+                              fitRooms.sort(
+                                (a, b) =>
+                                  parseFloat(a.price) - parseFloat(b.price)
+                              );
+                              hotel.rooms = fitRooms;
+                              globalSelectedList.push(hotel);
+                              if (idx === arr.length - 1) {
+                                globalSelectedList.sort(
+                                  (a, b) =>
+                                    parseFloat(a.distance) -
+                                    parseFloat(b.distance)
+                                );
+                                $.get("templates/hotel-list.html", source => {
+                                  template = Handlebars.compile(source);
+                                  context = globalSelectedList;
+                                  html = template(context);
+                                  $(".hotel-list").html(html);
+                                  location.href = "#hotel-list";
+                                  return false;
+                                });
+                              }
+                            }
+                          });
+                        }
+                      },
+                      "json"
+                    );
+                  }
                 }
               });
             }
