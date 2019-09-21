@@ -235,16 +235,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         minLength: 2
       });
     });
-    function gethotelList(item) {
+    async function gethotelList(item) {
       let adults = $("#hotelAdultSearch").val();
-      $.get(
+      let hotelList = [];
+      await $.get(
         "json/hotel.json",
         response => {
           globalSelectedList = [];
           for (towns in response) {
             for (town in response[towns]) {
-              response[towns][town].forEach((hotel, idx, arr) => {
-                if (hotel.hasOwnProperty("location")) {
+              response[towns][town].forEach(hotel => {
+                if (hotel.hasOwnProperty("location") && hotel.AgodaID > 0) {
                   dist = distance(
                     item.lat,
                     item.lon,
@@ -253,47 +254,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     "K"
                   );
                   hotel.distance = dist.toFixed(1);
-                  if (
-                    dist < 10 &&
-                    hotel.hasOwnProperty("location") &&
-                    hotel.AgodaID > 0
-                  ) {
-                    $.get(
-                      "rooms/" + hotel.AgodaID + ".json",
-                      rooms => {
-                        if (rooms.length > 0) {
-                          fitRooms = [];
-                          rooms.forEach((room, index, array) => {
-                            if (room.adults >= adults) fitRooms.push(room);
-                            if (index === array.length - 1) {
-                              fitRooms.sort(
-                                (a, b) =>
-                                  parseFloat(a.price) - parseFloat(b.price)
-                              );
-                              hotel.rooms = fitRooms;
-                              globalSelectedList.push(hotel);
-                              if (idx === arr.length - 1) {
-                                globalSelectedList.sort(
-                                  (a, b) =>
-                                    parseFloat(a.distance) -
-                                    parseFloat(b.distance)
-                                );
-                                $.get("templates/hotel-list.html", source => {
-                                  template = Handlebars.compile(source);
-                                  context = globalSelectedList;
-                                  html = template(context);
-                                  $(".hotel-list").html(html);
-                                  location.href = "#hotel-list";
-                                  return false;
-                                });
-                              }
-                            }
-                          });
-                        }
-                      },
-                      "json"
-                    );
-                  }
+                  hotelList.push(hotel);
                 }
               });
             }
@@ -301,6 +262,40 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         },
         "json"
       );
+      hotelList.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
+      //get 50 hotels
+      let idx = 0;
+      while (globalSelectedList.length < 50 && idx < hotelList.length) {
+        hotel = hotelList[idx];
+        try {
+          await $.get(
+            "rooms/" + hotel.AgodaID + ".json",
+            rooms => {
+              fitRooms = [];
+              rooms.forEach(room => {
+                if (room.adults >= adults) fitRooms.push(room);
+              });
+              if (fitRooms.length > 0) {
+                fitRooms.sort((a,b)=>parseFloat(a.price) - parseFloat(b.price))
+                hotel.rooms = fitRooms;
+                globalSelectedList.push(hotel);
+              }
+            },
+            "json"
+          );
+        } catch (e) {
+          console.log(e);
+        }
+        idx++;
+      }
+      await $.get("templates/hotel-list.html", source => {
+        template = Handlebars.compile(source);
+        context = globalSelectedList;
+        html = template(context);
+        $(".hotel-list").html(html);
+        location.href = "#hotel-list";
+        return false;
+      });
     }
   </script>
 </html>
