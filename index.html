@@ -8,8 +8,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html lang="zh-tw">
   <head>
     <title>
-      Trip spot Travel Category Flat Bootstrap Responsive Website Template |
-      Home :: w3layouts
+      2019秋冬旅遊補助配合旅宿
     </title>
     <!-- for-mobile-apps -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -77,12 +76,31 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           ></label>
           <input type="checkbox" id="drop" />
           <ul class="menu ml-auto mt-1">
-            <li class="active"><a href="index.html">Home</a></li>
-            <li class=""><a href="#about">About Us</a></li>
-            <li class=""><a href="#services">Services</a></li>
-            <li class=""><a href="#stats">Stats</a></li>
-            <li class=""><a href="#testimonials">Testimonials</a></li>
-            <li class=""><a href="#contact">Contact us</a></li>
+            <li class="active"><a href="index.html">查詢首頁</a></li>
+            <li class="active">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://admin.taiwan.net.tw/Handlers/FileHandler.ashx?fid=422b8323-c438-4e38-b77c-d8b7bb66482f&type=4&no=1"
+                >活動說明</a
+              >
+            </li>
+            <li class="active">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://fallwintertour.tbroc.gov.tw/customer_apply_page"
+                >活動申請</a
+              >
+            </li>
+            <li class="active">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://fallwintertour.tbroc.gov.tw/hotel"
+                >參與業者總覽</a
+              >
+            </li>
           </ul>
         </nav>
         <!-- //nav -->
@@ -108,7 +126,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                   <div class="container-fluid">
                     <div class="w3ls_banner_txt">
                       <h4>
-                        <span class="fa fa-ils" aria-hidden="true"></span>
+                        <span class="fa fa-ils" aria-hidden="true"></span
+                        >2019秋冬旅遊補助配合旅宿
                       </h4>
                     </div>
                   </div>
@@ -140,7 +159,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       required=""
                       autocomplete="off"
                     />
-                    <button Class="btn" type="button" onclick="gethotelList(globalSelected);">
+                    <button
+                      Class="btn"
+                      type="button"
+                      onclick="gethotelList(globalSelected);"
+                    >
                       搜尋
                     </button>
                   </div>
@@ -151,46 +174,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
       </div>
     </div>
-    <!-- map -->
-    <div class="map p-2">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d158857.728106568!2d-0.24168153701090248!3d51.52877184090542!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C+UK!5e0!3m2!1sen!2sin!4v1544074523717"
-      ></iframe>
-    </div>
-    <!-- //map -->
     <!--list-->
-    <main class="col-sm-12 hotel-list" id="hotel-list"></main>
+    <main class="hotel-list" id="hotel-list">
+      <section class="some-content py-3" id="about">
+        <h6 class="title-hny text-center">
+          <span class="d-inline text-nowrap">價格僅供比價參考、訂房需直接透過飯店</span>
+          <span class="d-inline text-nowrap">資料如有勘誤請藉由右上方Email通知我</span>
+        </h6>
+      </section>
+    </main>
     <!--\\list-->
     <!-- //banner -->
-    <!-- banner-bottom -->
-    <section class="some-content py-5" id="about">
-      <div class="container py-md-5">
-        <div class="row about-vv-top mt-2">
-          <div class="col-lg-6 about-info">
-            <h4 class="title-hny  mb-md-5">
-              Winter Wonders and Delicious Detours
-            </h4>
-            <p>
-              Donec malesuada ex sit amet pretium sid ornare. Nulla congue
-              scelerisque tellus, utpretium nulla malesuada sedint. Suspendisse
-              venenatis,Lorem ipsum dolor sit magna dolor.
-            </p>
-            <div class="read-more-button mt-4">
-              <a href="index.html" class="read-more btn">Read More </a>
-            </div>
-          </div>
-          <div class="col-lg-6 about-img mt-md-4 mt-sm-4">
-            <img src="images/ab1.jpg" class="img-fluid" alt="" />
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- //banner-bottom-->
 
     <!-- copyright -->
     <div class="copy-right-top">
       <p class="copy-right text-center py-4">
-        &copy; 2019 Trip Spot. All Rights Reserved | Design by
+        &copy; 2019 Trip Spot. 本網站為補充台灣旅宿網而建置 All Rights Reserved | Design by
         <a href="http://w3layouts.com/"> W3layouts </a>
       </p>
     </div>
@@ -227,7 +226,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           return true;
         },
         displayText: item => {
-          return item.display_name.split(",", 5).toString();
+          return item.display_name.split(",", 6).toString();
         },
         afterSelect: item => {
           globalSelected = item;
@@ -236,28 +235,28 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         minLength: 2
       });
     });
-    async function tryGetRooms(hotel){
+    async function tryGetRooms(hotel) {
       try {
-          await $.get(
-            "rooms/" + hotel.AgodaID + ".json",
-            rooms => {
-              fitRooms = [];
-              rooms.forEach(room => {
-                if (room.adults >= adults) fitRooms.push(room);
-              });
-              if (fitRooms.length > 0) {
-                fitRooms.sort(
-                  (a, b) => parseFloat(a.price) - parseFloat(b.price)
-                );
-                hotel.rooms = fitRooms;
-                globalSelectedList.push(hotel);
-              }
-            },
-            "json"
-          );
-        } catch (e) {
-          console.log(e);
-        }
+        await $.get(
+          "rooms/" + hotel.AgodaID + ".json",
+          rooms => {
+            fitRooms = [];
+            rooms.forEach(room => {
+              if (room.adults >= adults) fitRooms.push(room);
+            });
+            if (fitRooms.length > 0) {
+              fitRooms.sort(
+                (a, b) => parseFloat(a.price) - parseFloat(b.price)
+              );
+              hotel.rooms = fitRooms;
+              globalSelectedList.push(hotel);
+            }
+          },
+          "json"
+        );
+      } catch (e) {
+        console.log(e);
+      }
     }
     async function gethotelList(item) {
       adults = $("#hotelAdultSearch").val();
@@ -291,19 +290,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       //get 50 hotels
       let idx = 0;
       while (globalSelectedList.length < 50 && idx < hotelList.length) {
-        let diffCount = 50 - globalSelectedList.length
+        let diffCount = 50 - globalSelectedList.length;
         const promises = hotelList.slice(idx, idx + diffCount).map(tryGetRooms);
         // wait until all promises are resolved
         await Promise.all(promises);
-        idx+=diffCount;
+        idx += diffCount;
       }
-      await $.get("templates/hotel-list.html", source => {
-        template = Handlebars.compile(source);
-        context = globalSelectedList;
-        html = template(context);
-        $(".hotel-list").html(html);
-        location.href = "#hotel-list";
-      },"html");
+      await $.get(
+        "templates/hotel-list.html",
+        source => {
+          template = Handlebars.compile(source);
+          context = globalSelectedList;
+          html = template(context);
+          $(".hotel-list").html(html);
+          location.href = "#hotel-list";
+        },
+        "html"
+      );
     }
   </script>
 </html>
