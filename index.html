@@ -182,17 +182,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       </div>
     </div>
     <!--list-->
-    <main class="hotel-list" id="hotel-list">
-      <section class="some-content py-3" id="about">
-        <h6 class="title-hny text-center user-info">
-          <span>價格僅供比價參考、訂房需直接透過飯店</span>
-          <span>資料如有勘誤請藉由右上方Email通知我</span>
-        </h6>
-      </section>
-    </main>
+    <main class="hotel-list" id="hotel-list"></main>
     <!--\\list-->
     <!-- //banner -->
-
+    <section class="some-content py-3" id="about">
+      <h6 class="title-hny text-center user-info">
+        <span>價格僅供比價參考、訂房需直接透過飯店</span>
+        <span>資料如有勘誤請藉由右上方Email通知我</span>
+      </h6>
+    </section>
     <!-- copyright -->
     <div class="copy-right-top">
       <p class="copy-right text-center py-4">
@@ -213,7 +211,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   <script>
     var globalSelected;
     var globalSelectedList;
-    var adults;
+    var adults, price;
     Handlebars.registerHelper("ImgNameRe", context => {
       result = /[\w]+.(jpg|png)/i.exec(context);
       if (result && result.length > 0) return result[0];
@@ -256,7 +254,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 (a, b) => parseFloat(a.price) - parseFloat(b.price)
               );
               hotel.rooms = fitRooms;
-              globalSelectedList.push(hotel);
+              if(hotel.rooms[0].price<price) globalSelectedList.push(hotel);
             }
           },
           "json"
@@ -266,8 +264,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       }
     }
     async function gethotelList(item) {
-      adults = $("#hotelAdultSearch").val();
       let hotelList = [];
+      adults = $("#hotelAdultSearch").val();
+      price = $('#hotelPriceSearch').val();
+      if(!price) price = 9999999;
       if (!item || !adults) return false;
       await $.get(
         "json/hotel.json",
