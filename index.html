@@ -120,7 +120,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           <div class="col-md-12 px-lg-3 px-0">
             <div class="banner-form-w3">
               <div class="padding">
-                <form action="#" method="get">
+                <form>
                   <h5 class="mb-3">想要去哪裡? 快搜尋看看</h5>
                   <div class="form-style-w3layout">
                     <input
@@ -140,7 +140,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       required=""
                       autocomplete="off"
                     />
-                    <button Class="btn" onclick="gethotelList(globalSelected);">
+                    <button Class="btn" type="button" onclick="gethotelList(globalSelected);">
                       搜尋
                     </button>
                   </div>
@@ -238,6 +238,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     async function gethotelList(item) {
       let adults = $("#hotelAdultSearch").val();
       let hotelList = [];
+      if (!item || !adults) return false;
       await $.get(
         "json/hotel.json",
         response => {
@@ -276,7 +277,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 if (room.adults >= adults) fitRooms.push(room);
               });
               if (fitRooms.length > 0) {
-                fitRooms.sort((a,b)=>parseFloat(a.price) - parseFloat(b.price))
+                fitRooms.sort(
+                  (a, b) => parseFloat(a.price) - parseFloat(b.price)
+                );
                 hotel.rooms = fitRooms;
                 globalSelectedList.push(hotel);
               }
@@ -294,8 +297,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         html = template(context);
         $(".hotel-list").html(html);
         location.href = "#hotel-list";
-        return false;
-      });
+      },"html");
     }
   </script>
 </html>
