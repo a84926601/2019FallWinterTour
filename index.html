@@ -207,6 +207,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   <script>
     var globalSelected;
     var globalSelectedList;
+    var adults;
     Handlebars.registerHelper("ImgNameRe", context => {
       result = /[\w]+.(jpg|png)/i.exec(context);
       if (result && result.length > 0) return result[0];
@@ -235,8 +236,31 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         minLength: 2
       });
     });
+    async function tryGetRooms(hotel){
+      try {
+          await $.get(
+            "rooms/" + hotel.AgodaID + ".json",
+            rooms => {
+              fitRooms = [];
+              rooms.forEach(room => {
+                if (room.adults >= adults) fitRooms.push(room);
+              });
+              if (fitRooms.length > 0) {
+                fitRooms.sort(
+                  (a, b) => parseFloat(a.price) - parseFloat(b.price)
+                );
+                hotel.rooms = fitRooms;
+                globalSelectedList.push(hotel);
+              }
+            },
+            "json"
+          );
+        } catch (e) {
+          console.log(e);
+        }
+    }
     async function gethotelList(item) {
-      let adults = $("#hotelAdultSearch").val();
+      adults = $("#hotelAdultSearch").val();
       let hotelList = [];
       if (!item || !adults) return false;
       await $.get(
@@ -267,29 +291,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       //get 50 hotels
       let idx = 0;
       while (globalSelectedList.length < 50 && idx < hotelList.length) {
-        hotel = hotelList[idx];
-        try {
-          await $.get(
-            "rooms/" + hotel.AgodaID + ".json",
-            rooms => {
-              fitRooms = [];
-              rooms.forEach(room => {
-                if (room.adults >= adults) fitRooms.push(room);
-              });
-              if (fitRooms.length > 0) {
-                fitRooms.sort(
-                  (a, b) => parseFloat(a.price) - parseFloat(b.price)
-                );
-                hotel.rooms = fitRooms;
-                globalSelectedList.push(hotel);
-              }
-            },
-            "json"
-          );
-        } catch (e) {
-          console.log(e);
-        }
-        idx++;
+        let diffCount = 50 - globalSelectedList.length
+        const promises = hotelList.slice(idx, idx + diffCount).map(tryGetRooms);
+        // wait until all promises are resolved
+        await Promise.all(promises);
+        idx+=diffCount;
       }
       await $.get("templates/hotel-list.html", source => {
         template = Handlebars.compile(source);
