@@ -31,6 +31,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"
     ></script>
+    <script
+      type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLeeBrDYHH80v0finp3EEihhmaZOzSp0&libraries=places"
+    ></script>
     <!-- //js files -->
 
     <!-- css files -->
@@ -146,9 +150,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       id="hotelLocationSearch"
                       type="text"
                       required=""
-                      ref="site"
-                      v-model="site"
                       autocomplete="off"
+                      oninput="$('#SearchBtn').attr('disabled', 'disabled');globalSelected=null;"
                     />
                     <input
                       placeholder="成人人數"
@@ -168,8 +171,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       autocomplete="off"
                     />
                     <button
+                    id="SearchBtn"
                       Class="btn"
                       type="button"
+                      disabled=""
                       onclick="gethotelList(globalSelected);"
                     >
                       搜尋
@@ -212,33 +217,29 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   <script>
     var globalSelected;
     var globalSelectedList;
+    var autocomplete;
     var adults, price;
     Handlebars.registerHelper("ImgNameRe", context => {
       result = /[\w]+.(jpg|png)/i.exec(context);
       if (result && result.length > 0) return result[0];
     });
     $(document).ready(function() {
-      $("#hotelLocationSearch").typeahead({
-        source: (query, process) => {
-          $.get(
-            "https://nominatim.openstreetmap.org/search?format=json&accept-language=zh-tw&countrycodes=tw&q=" +
-              query,
-            data => {
-              process(data);
-            }
-          );
-        },
-        matcher: () => {
-          return true;
-        },
-        displayText: item => {
-          return item.display_name.split(",", 6).toString();
-        },
-        afterSelect: item => {
-          globalSelected = item;
-        },
-        delay: 300,
-        minLength: 2
+      let input = document.getElementById("hotelLocationSearch");
+      let options = {
+        componentRestrictions: { country: "tw" }
+      };
+      autocomplete = new google.maps.places.Autocomplete(input, options);
+      autocomplete.addListener("place_changed", () => {
+        place = autocomplete.getPlace(); // 地點資料存進place
+
+        // 確認回來的資料有經緯度
+        if (place.geometry) {
+          globalSelected = place;
+          $('#SearchBtn').removeAttr('disabled');
+        } else {
+          $('#SearchBtn').attr('disabled', 'disabled');
+          globalSelected = null;
+        }
       });
     });
     async function tryGetRooms(hotel) {
@@ -255,7 +256,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 (a, b) => parseFloat(a.price) - parseFloat(b.price)
               );
               hotel.rooms = fitRooms;
-              if(hotel.rooms[0].price<price) globalSelectedList.push(hotel);
+              if (hotel.rooms[0].price < price) globalSelectedList.push(hotel);
             }
           },
           "json"
@@ -267,8 +268,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     async function gethotelList(item) {
       let hotelList = [];
       adults = $("#hotelAdultSearch").val();
-      price = $('#hotelPriceSearch').val();
-      if(!price) price = 9999999;
+      price = $("#hotelPriceSearch").val();
+      if (!price) price = 9999999;
       if (!item || !adults) return false;
       await $.get(
         "json/hotel.json",
@@ -279,8 +280,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
               response[towns][town].forEach(hotel => {
                 if (hotel.hasOwnProperty("location") && hotel.AgodaID > 0) {
                   dist = distance(
-                    item.lat,
-                    item.lon,
+                    item.geometry.location.lat(),
+                    item.geometry.location.lng(),
                     hotel.location.lat,
                     hotel.location.lng,
                     "K"
