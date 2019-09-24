@@ -177,7 +177,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       type="text"
                       required=""
                       autocomplete="off"
-                      oninput="document.getElementById('SearchBtn').setAttribute('disabled', 'disabled');globalSelected=null;"
+                      oninput="checkInput()"
                     />
                     <input
                       placeholder="成人人數"
@@ -187,6 +187,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       max="6"
                       required=""
                       autocomplete="off"
+                      oninput="checkInput()"
                     />
                     <input
                       placeholder="最高預算"
@@ -201,9 +202,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       Class="btn"
                       type="button"
                       disabled=""
-                      onclick="gethotelList(globalSelected);"
+                      onclick="if(checkInput())gethotelList(globalSelected);"
                     >
-                      搜尋
+                    搜尋
                     </button>
                   </div>
                 </form>
@@ -360,14 +361,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           break;
       }
     }
-    async function gethotelList(item) {
-      //搜尋中
-      $("#SearchBtn").attr("disabled", "disabled");
-      $("#SearchBtn").text("搜尋中...")
+    function checkInput() {
+      if (!globalSelected || !adults) {
+        $("#SearchBtn").text("請輸入地點與人數");
+        $("#SearchBtn").attr("disabled", "disabled");
+        return false;
+      }else return true;
+    }
+    async function gethotelList() {
       adults = $("#hotelAdultSearch").val();
       price = $("#hotelPriceSearch").val();
       if (!price) price = 9999999;
-      if (!item || !adults) return false;
+      //搜尋中
+      $("#SearchBtn").attr("disabled", "disabled");
+      $("#SearchBtn").text("搜尋中...")
       globalSelectedList = [];
       const promises = globalHotelList.map(calculateAllDistance);
       // wait until all promises are resolved
