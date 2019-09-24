@@ -240,7 +240,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       let hotelListVersion = "hotelListV1";
       globalHotelList = localStorage.getItem(hotelListVersion);
       if (globalHotelList) {
-        globalSelectedList = JSON.parse(globalHotelList);
+        globalHotelList = JSON.parse(globalHotelList);
       } else {
         $.get(
           "json/hotel.json",
