@@ -223,6 +223,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       result = /[\w]+.(jpg|png)/i.exec(context);
       if (result && result.length > 0) return result[0];
     });
+    Handlebars.registerHelper("ImgServer", ID => {
+      return ID%10<6?"HotelImages":"HotelImages2";
+    });
     $(document).ready(function() {
       let input = document.getElementById("hotelLocationSearch");
       let options = {
