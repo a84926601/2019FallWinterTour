@@ -153,7 +153,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       type="text"
                       required=""
                       autocomplete="off"
-                      oninput="$('#SearchBtn').attr('disabled', 'disabled');globalSelected=null;"
+                      oninput="document.getElementsById('SearchBtn').setAttribute('disabled', 'disabled');globalSelected=null;"
                     />
                     <input
                       placeholder="成人人數"
@@ -291,8 +291,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           "K"
         );
         hotel.distance = dist.toFixed(1);
+        return hotel;
       }
-      return hotel;
     }
     async function tryGetRooms(hotel) {
       try {
@@ -347,6 +347,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       await globalHotelList.sort(
         (a, b) => parseFloat(a.distance) - parseFloat(b.distance)
       );
+      await globalHotelList.filter(el=>{return el!=null});
       await findFitHotels();
       await $.get(
         "templates/hotel-list.html",
