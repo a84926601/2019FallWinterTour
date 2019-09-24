@@ -306,7 +306,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       });
     }
     async function calculateAllDistance(hotel) {
-      if (hotel.hasOwnProperty("location") && hotel.AgodaID > 0) {
+      if (hotel && hotel.hasOwnProperty("location") && hotel.AgodaID > 0) {
         dist = distance(
           globalSelected.geometry.location.lat(),
           globalSelected.geometry.location.lng(),
@@ -361,6 +361,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       }
     }
     async function gethotelList(item) {
+      //搜尋中
+      $("#SearchBtn").attr("disabled", "disabled");
+      $("#SearchBtn").text("搜尋中...")
       adults = $("#hotelAdultSearch").val();
       price = $("#hotelPriceSearch").val();
       if (!price) price = 9999999;
@@ -384,6 +387,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           html = template(context);
           $(".hotel-list").html(html);
           location.href = "#hotel-list";
+          $("#SearchBtn").text("搜尋");
+          $("#SearchBtn").removeAttr("disabled");
         },
         "html"
       );
