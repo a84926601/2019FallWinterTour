@@ -227,7 +227,29 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     Handlebars.registerHelper("ImgServer", ID => {
       return ID % 10 < 6 ? "HotelImages" : "HotelImages2";
     });
+
     $(document).ready(function() {
+      initSearchListener();
+      preFetchHotelList();
+    });
+    
+    function preFetchHotelList() {
+      let hotelListVersion = "hotelListV1";
+      globalHotelList = localStorage.getItem(hotelListVersion);
+      if (globalHotelList) {
+        globalSelectedList = JSON.parse(globalHotelList);
+      } else {
+        $.get(
+          "json/hotel.json",
+          data => {
+            globalHotelList = data;
+            localStorage.setItem(hotelListVersion, JSON.stringify(data));
+          },
+          "json"
+        );
+      }
+    }
+    function initSearchListener() {
       let input = document.getElementById("hotelLocationSearch");
       let options = {
         componentRestrictions: { country: "tw" }
@@ -245,21 +267,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           globalSelected = null;
         }
       });
-      let hotelListVersion = "hotelListV1";
-      globalHotelList = localStorage.getItem(hotelListVersion);
-      if (globalHotelList) {
-        globalSelectedList = JSON.parse(globalHotelList);
-      } else {
-        $.get(
-          "json/hotel.json",
-          data => {
-            globalHotelList = data;
-            localStorage.setItem(hotelListVersion, JSON.stringify(data));
-          },
-          "json"
-        );
-      }
-    });
+    }
     async function tryGetRooms(hotel) {
       try {
         await $.get(
