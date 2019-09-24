@@ -237,16 +237,26 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       });
     }
     function preFetchHotelList() {
-      let hotelListVersion = "hotelListV1";
+      let hotelListVersion = "hotelListV1.1";
       globalHotelList = localStorage.getItem(hotelListVersion);
       if (globalHotelList) {
         globalHotelList = JSON.parse(globalHotelList);
       } else {
+        globalHotelList = [];
         $.get(
           "json/hotel.json",
           data => {
-            globalHotelList = data;
-            localStorage.setItem(hotelListVersion, JSON.stringify(data));
+            for (towns in data) {
+              for (town in data[towns]) {
+                data[towns][town].forEach(hotel => {
+                  globalHotelList.push(hotel);
+                });
+              }
+            }
+            localStorage.setItem(
+              hotelListVersion,
+              JSON.stringify(globalHotelList)
+            );
           },
           "json"
         );
@@ -271,6 +281,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         }
       });
     }
+    async function calculateAllDistance(hotel) {
+      if (hotel.hasOwnProperty("location") && hotel.AgodaID > 0) {
+        dist = distance(
+          globalSelected.geometry.location.lat(),
+          globalSelected.geometry.location.lng(),
+          hotel.location.lat,
+          hotel.location.lng,
+          "K"
+        );
+        hotel.distance = dist.toFixed(1);
+      }
+      return hotel;
+    }
     async function tryGetRooms(hotel) {
       try {
         await $.get(
@@ -294,44 +317,37 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         console.log(e);
       }
     }
+    async function findFitHotels() {
+      //get 50 hotels
+      let idx = 0;
+      while (
+        globalSelectedList.length < 50 &&
+        idx < globalHotelList.length
+      ) {
+        let diffCount = 200 - globalSelectedList.length;
+        const promises = globalHotelList
+          .slice(idx, idx + diffCount)
+          .map(tryGetRooms);
+        // wait until all promises are resolved
+        await Promise.all(promises);
+        idx += diffCount;
+        //break when distance large than 10
+        if(globalSelectedList.length>0&&globalSelectedList.slice(-1).distance > 10) break;
+      }
+    }
     async function gethotelList(item) {
-      let hotelList = [];
       adults = $("#hotelAdultSearch").val();
       price = $("#hotelPriceSearch").val();
       if (!price) price = 9999999;
       if (!item || !adults) return false;
       globalSelectedList = [];
-      for (towns in globalHotelList) {
-        for (town in globalHotelList[towns]) {
-          await globalHotelList[towns][town].forEach(hotel => {
-            if (hotel.hasOwnProperty("location") && hotel.AgodaID > 0) {
-              dist = distance(
-                item.geometry.location.lat(),
-                item.geometry.location.lng(),
-                hotel.location.lat,
-                hotel.location.lng,
-                "K"
-              );
-              hotel.distance = dist.toFixed(1);
-              hotelList.push(hotel);
-            }
-          });
-        }
-      }
-      hotelList.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
-      //get 50 hotels
-      let idx = 0;
-      while (
-        globalSelectedList.length < 50 &&
-        idx < hotelList.length &&
-        globalSelectedList.slice(-1).distance < 10
-      ) {
-        let diffCount = 200 - globalSelectedList.length;
-        const promises = hotelList.slice(idx, idx + diffCount).map(tryGetRooms);
-        // wait until all promises are resolved
-        await Promise.all(promises);
-        idx += diffCount;
-      }
+      const promises = globalHotelList.map(calculateAllDistance);
+      // wait until all promises are resolved
+      await Promise.all(promises).then(result => (globalHotelList = result));
+      await globalHotelList.sort(
+        (a, b) => parseFloat(a.distance) - parseFloat(b.distance)
+      );
+      await findFitHotels();
       await $.get(
         "templates/hotel-list.html",
         source => {
