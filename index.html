@@ -302,7 +302,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       //get 50 hotels
       let idx = 0;
       while (globalSelectedList.length < 50 && idx < hotelList.length) {
-        let diffCount = 50 - globalSelectedList.length;
+        let diffCount = 100 - globalSelectedList.length;
         const promises = hotelList.slice(idx, idx + diffCount).map(tryGetRooms);
         // wait until all promises are resolved
         await Promise.all(promises);
