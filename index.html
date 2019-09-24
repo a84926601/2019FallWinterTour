@@ -21,17 +21,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
     <!-- js files-->
     <script
+      async
       src="https://code.jquery.com/jquery-3.4.1.min.js"
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
       crossorigin="anonymous"
     ></script>
-    <script src="js/bootstrap3-typeahead.min.js"></script>
-    <script src="js/get-distance.js"></script>
+    <script defer src="js/get-distance.js"></script>
     <script
+      async
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"
     ></script>
     <script
+      async
       type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLeeBrDYHH80v0finp3EEihhmaZOzSp0&libraries=places"
     ></script>
@@ -220,19 +222,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     var globalSelectedList;
     var autocomplete;
     var adults, price;
-    Handlebars.registerHelper("ImgNameRe", context => {
-      result = /[\w]+.(jpg|png)/i.exec(context);
-      if (result && result.length > 0) return result[0];
-    });
-    Handlebars.registerHelper("ImgServer", ID => {
-      return ID % 10 < 6 ? "HotelImages" : "HotelImages2";
-    });
-
-    $(document).ready(function() {
+    window.onload = () => {
       initSearchListener();
+      initHandlebarHelper();
       preFetchHotelList();
-    });
-
+    };
+    function initHandlebarHelper() {
+      Handlebars.registerHelper("ImgNameRe", context => {
+        result = /[\w]+.(jpg|png)/i.exec(context);
+        if (result && result.length > 0) return result[0];
+      });
+      Handlebars.registerHelper("ImgServer", ID => {
+        return ID % 10 < 6 ? "HotelImages" : "HotelImages2";
+      });
+    }
     function preFetchHotelList() {
       let hotelListVersion = "hotelListV1";
       globalHotelList = localStorage.getItem(hotelListVersion);
