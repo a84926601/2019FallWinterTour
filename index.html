@@ -171,7 +171,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       autocomplete="off"
                     />
                     <button
-                    id="SearchBtn"
+                      id="SearchBtn"
                       Class="btn"
                       type="button"
                       disabled=""
@@ -215,6 +215,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!-- move top -->
   </body>
   <script>
+    var globalHotelList;
     var globalSelected;
     var globalSelectedList;
     var autocomplete;
@@ -224,7 +225,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       if (result && result.length > 0) return result[0];
     });
     Handlebars.registerHelper("ImgServer", ID => {
-      return ID%10<6?"HotelImages":"HotelImages2";
+      return ID % 10 < 6 ? "HotelImages" : "HotelImages2";
     });
     $(document).ready(function() {
       let input = document.getElementById("hotelLocationSearch");
@@ -238,12 +239,26 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         // 確認回來的資料有經緯度
         if (place.geometry) {
           globalSelected = place;
-          $('#SearchBtn').removeAttr('disabled');
+          $("#SearchBtn").removeAttr("disabled");
         } else {
-          $('#SearchBtn').attr('disabled', 'disabled');
+          $("#SearchBtn").attr("disabled", "disabled");
           globalSelected = null;
         }
       });
+      let hotelListVersion = "hotelListV1";
+      globalHotelList = localStorage.getItem(hotelListVersion);
+      if (globalHotelList) {
+        globalSelectedList = JSON.parse(globalHotelList);
+      } else {
+        $.get(
+          "json/hotel.json",
+          data => {
+            globalHotelList = data;
+            localStorage.setItem(hotelListVersion, JSON.stringify(data));
+          },
+          "json"
+        );
+      }
     });
     async function tryGetRooms(hotel) {
       try {
@@ -274,30 +289,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       price = $("#hotelPriceSearch").val();
       if (!price) price = 9999999;
       if (!item || !adults) return false;
-      await $.get(
-        "json/hotel.json",
-        response => {
-          globalSelectedList = [];
-          for (towns in response) {
-            for (town in response[towns]) {
-              response[towns][town].forEach(hotel => {
-                if (hotel.hasOwnProperty("location") && hotel.AgodaID > 0) {
-                  dist = distance(
-                    item.geometry.location.lat(),
-                    item.geometry.location.lng(),
-                    hotel.location.lat,
-                    hotel.location.lng,
-                    "K"
-                  );
-                  hotel.distance = dist.toFixed(1);
-                  hotelList.push(hotel);
-                }
-              });
+      globalSelectedList = [];
+      for (towns in globalHotelList) {
+        for (town in globalHotelList[towns]) {
+          globalHotelList[towns][town].forEach(hotel => {
+            if (hotel.hasOwnProperty("location") && hotel.AgodaID > 0) {
+              dist = distance(
+                item.geometry.location.lat(),
+                item.geometry.location.lng(),
+                hotel.location.lat,
+                hotel.location.lng,
+                "K"
+              );
+              hotel.distance = dist.toFixed(1);
+              hotelList.push(hotel);
             }
-          }
-        },
-        "json"
-      );
+          });
+        }
+      }
       hotelList.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
       //get 50 hotels
       let idx = 0;
