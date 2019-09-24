@@ -323,7 +323,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         idx < hotelList.length &&
         globalSelectedList.slice(-1).distance < 10
       ) {
-        let diffCount = 100 - globalSelectedList.length;
+        let diffCount = 200 - globalSelectedList.length;
         const promises = hotelList.slice(idx, idx + diffCount).map(tryGetRooms);
         // wait until all promises are resolved
         await Promise.all(promises);
