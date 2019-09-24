@@ -232,7 +232,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       initSearchListener();
       preFetchHotelList();
     });
-    
+
     function preFetchHotelList() {
       let hotelListVersion = "hotelListV1";
       globalHotelList = localStorage.getItem(hotelListVersion);
@@ -300,7 +300,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       globalSelectedList = [];
       for (towns in globalHotelList) {
         for (town in globalHotelList[towns]) {
-          globalHotelList[towns][town].forEach(hotel => {
+          await globalHotelList[towns][town].forEach(hotel => {
             if (hotel.hasOwnProperty("location") && hotel.AgodaID > 0) {
               dist = distance(
                 item.geometry.location.lat(),
@@ -318,7 +318,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       hotelList.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
       //get 50 hotels
       let idx = 0;
-      while (globalSelectedList.length < 50 && idx < hotelList.length) {
+      while (
+        globalSelectedList.length < 50 &&
+        idx < hotelList.length &&
+        globalSelectedList.slice(-1).distance < 10
+      ) {
         let diffCount = 100 - globalSelectedList.length;
         const promises = hotelList.slice(idx, idx + diffCount).map(tryGetRooms);
         // wait until all promises are resolved
