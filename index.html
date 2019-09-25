@@ -312,6 +312,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         // 確認回來的資料有經緯度
         if (place.geometry) {
           globalSelected = place;
+          checkInput();
         } else {
           globalSelected = null;
         }
@@ -329,6 +330,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         hotel.distance = dist.toFixed(1);
         return hotel;
       }
+    }
+    async function sortByDistance(arr) {
+      arr.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
+      return arr;
     }
     async function tryGetRooms(hotel) {
       try {
@@ -364,12 +369,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         // wait until all promises are resolved
         await Promise.all(promises);
         idx += diffCount;
-        //break when distance large than 10
+        //break when distance larger than 10
         if (
           globalSelectedList.length > 0 &&
           globalSelectedList.slice(-1).distance > 10
-        )
-          break;
+        ) break;
       }
     }
     function checkInput() {
@@ -384,13 +388,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           $("#SearchBtn").text("預算請大於500");
           $("#SearchBtn").attr("disabled", "disabled");
           return false;
-        }
-        else if(adults&&(adults>6||adults<1)) {
+        } else if (adults && (adults > 6 || adults < 1)) {
           $("#SearchBtn").text("成人人數請介於1~6間");
           $("#SearchBtn").attr("disabled", "disabled");
           return false;
-        }
-        else {
+        } else {
           $("#SearchBtn").text("搜尋");
           $("#SearchBtn").removeAttr("disabled");
         }
@@ -407,13 +409,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         const promises = globalHotelList.map(calculateAllDistance);
         // wait until all promises are resolved
         await Promise.all(promises).then(result => (globalHotelList = result));
-        await globalHotelList.sort(
-          (a, b) => parseFloat(a.distance) - parseFloat(b.distance)
-        );
+        globalHotelList = await sortByDistance(globalHotelList);
         await globalHotelList.filter(el => {
           return el != null;
         });
         await findFitHotels();
+        globalSelectedList=await sortByDistance(globalSelectedList);
         await $.get(
           "templates/hotel-list.html",
           source => {
