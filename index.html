@@ -20,13 +20,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     />
 
     <!-- js files-->
-    <script
-      async
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
-      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-      crossorigin="anonymous"
-    ></script>
-    <script defer src="js/get-distance.js"></script>
     <script id="apiKey" src="API.key"></script>
     <script>
       var key;
@@ -47,9 +40,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </script>
     <script
       async
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      async
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"
     ></script>
+    <script defer src="js/get-distance.js"></script>
     <!-- Google Tag Manager -->
     <script>
       (function(w, d, s, l, i) {
@@ -362,7 +362,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       //get 50 hotels
       let idx = 0;
       while (globalSelectedList.length < 50 && idx < globalHotelList.length) {
-        let diffCount = 150 - globalSelectedList.length;
+        let diffCount = 100 - globalSelectedList.length;
         const promises = globalHotelList
           .slice(idx, idx + diffCount)
           .map(tryGetRooms);
