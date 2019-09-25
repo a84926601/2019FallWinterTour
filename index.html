@@ -361,25 +361,26 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     async function findFitHotels() {
       //get 50 hotels
       let idx = 0;
+      let maxDistance = 15
+      let pageSize=50;
       while (
-        globalSelectedList.length < 50 &&
+        globalSelectedList.length < pageSize &&
         idx < globalHotelList.length &&
-        globalHotelList[idx].distance <= 10
+        globalHotelList[idx].distance <= maxDistance
       ) {
-        let diffCount = 100 - globalSelectedList.length;
         const promises = globalHotelList
-          .slice(idx, idx + diffCount)
+          .slice(idx, idx + pageSize)
           .map(tryGetRooms);
         // wait until all promises are resolved
         await Promise.all(promises);
-        idx += diffCount;
+        idx += pageSize;
       }
     }
     function checkInput() {
       adults = $("#hotelAdultSearch").val();
       price = $("#hotelPriceSearch").val();
       if (!globalSelected || !adults) {
-        $("#SearchBtn").text("請輸入地點與人數");
+        $("#SearchBtn").text("請選擇地點與人數");
         $("#SearchBtn").attr("disabled", "disabled");
         return false;
       } else {
