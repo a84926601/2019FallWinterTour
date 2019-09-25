@@ -361,7 +361,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     async function findFitHotels() {
       //get 50 hotels
       let idx = 0;
-      while (globalSelectedList.length < 50 && idx < globalHotelList.length) {
+      while (
+        globalSelectedList.length < 50 &&
+        idx < globalHotelList.length &&
+        globalHotelList[idx].distance <= 10
+      ) {
         let diffCount = 100 - globalSelectedList.length;
         const promises = globalHotelList
           .slice(idx, idx + diffCount)
@@ -369,11 +373,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         // wait until all promises are resolved
         await Promise.all(promises);
         idx += diffCount;
-        //break when distance larger than 10
-        if (
-          globalSelectedList.length > 0 &&
-          globalSelectedList.slice(-1).distance > 10
-        ) break;
       }
     }
     function checkInput() {
@@ -414,20 +413,26 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           return el != null;
         });
         await findFitHotels();
-        globalSelectedList=await sortByDistance(globalSelectedList);
-        await $.get(
-          "templates/hotel-list.html",
-          source => {
-            template = Handlebars.compile(source);
-            context = globalSelectedList;
-            html = template(context);
-            $(".hotel-list").html(html);
-            location.href = "#hotel-list";
-            $("#SearchBtn").text("搜尋");
-            $("#SearchBtn").removeAttr("disabled");
-          },
-          "html"
-        );
+        globalSelectedList = await sortByDistance(globalSelectedList);
+        if (globalSelectedList.length > 0) {
+          await $.get(
+            "templates/hotel-list.html",
+            source => {
+              template = Handlebars.compile(source);
+              context = globalSelectedList;
+              html = template(context);
+              $(".hotel-list").html(html);
+            },
+            "html"
+          );
+        } else {
+          $(".hotel-list").html(
+            "<h5>沒有找到符合的條件 換個條件搜尋看看吧!<h5>"
+          );
+        }
+        location.href = "#hotel-list";
+        $("#SearchBtn").text("搜尋");
+        $("#SearchBtn").removeAttr("disabled");
       }
     }
   </script>
