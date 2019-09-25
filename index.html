@@ -30,8 +30,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <script id="apiKey" src="API.key"></script>
     <script>
       var key;
-      try{key = getKey();}
-      catch{key = "AIzaSyCFLeeBrDYHH80v0finp3EEihhmaZOzSp0";}
+      try {
+        key = getKey();
+      } catch {
+        key = "AIzaSyCFLeeBrDYHH80v0finp3EEihhmaZOzSp0";
+      }
       script = document.createElement("script");
       script.setAttribute(
         "src",
@@ -39,7 +42,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           key +
           "&libraries=places"
       );
-      script.setAttribute("async","async");
+      script.setAttribute("async", "async");
       document.getElementById("apiKey").appendChild(script);
     </script>
     <script
@@ -204,14 +207,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       id="hotelPriceSearch"
                       type="number"
                       min="500"
-                      max="10000"
                       autocomplete="off"
+                      oninput="checkInput()"
                     />
                     <button
                       id="SearchBtn"
                       Class="btn"
                       type="button"
-                      disabled=""
+                      disabled="disabled"
                       onclick="if(checkInput())gethotelList(globalSelected);"
                     >
                       搜尋
@@ -309,9 +312,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         // 確認回來的資料有經緯度
         if (place.geometry) {
           globalSelected = place;
-          $("#SearchBtn").removeAttr("disabled");
         } else {
-          $("#SearchBtn").attr("disabled", "disabled");
           globalSelected = null;
         }
       });
@@ -372,43 +373,61 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       }
     }
     function checkInput() {
+      adults = $("#hotelAdultSearch").val();
+      price = $("#hotelPriceSearch").val();
       if (!globalSelected || !adults) {
         $("#SearchBtn").text("請輸入地點與人數");
         $("#SearchBtn").attr("disabled", "disabled");
         return false;
-      } else return true;
-    }
-    async function gethotelList() {
-      adults = $("#hotelAdultSearch").val();
-      price = $("#hotelPriceSearch").val();
-      if (!price) price = 9999999;
-      //搜尋中
-      $("#SearchBtn").attr("disabled", "disabled");
-      $("#SearchBtn").text("搜尋中...");
-      globalSelectedList = [];
-      const promises = globalHotelList.map(calculateAllDistance);
-      // wait until all promises are resolved
-      await Promise.all(promises).then(result => (globalHotelList = result));
-      await globalHotelList.sort(
-        (a, b) => parseFloat(a.distance) - parseFloat(b.distance)
-      );
-      await globalHotelList.filter(el => {
-        return el != null;
-      });
-      await findFitHotels();
-      await $.get(
-        "templates/hotel-list.html",
-        source => {
-          template = Handlebars.compile(source);
-          context = globalSelectedList;
-          html = template(context);
-          $(".hotel-list").html(html);
-          location.href = "#hotel-list";
+      } else {
+        if (price && price < 500) {
+          $("#SearchBtn").text("預算請大於500");
+          $("#SearchBtn").attr("disabled", "disabled");
+          return false;
+        }
+        else if(adults&&(adults>6||adults<1)) {
+          $("#SearchBtn").text("成人人數請介於1~6間");
+          $("#SearchBtn").attr("disabled", "disabled");
+          return false;
+        }
+        else {
           $("#SearchBtn").text("搜尋");
           $("#SearchBtn").removeAttr("disabled");
-        },
-        "html"
-      );
+        }
+        return true;
+      }
+    }
+    async function gethotelList() {
+      if (checkInput()) {
+        if (!price) price = 9999999;
+        //搜尋中
+        $("#SearchBtn").attr("disabled", "disabled");
+        $("#SearchBtn").text("搜尋中...");
+        globalSelectedList = [];
+        const promises = globalHotelList.map(calculateAllDistance);
+        // wait until all promises are resolved
+        await Promise.all(promises).then(result => (globalHotelList = result));
+        await globalHotelList.sort(
+          (a, b) => parseFloat(a.distance) - parseFloat(b.distance)
+        );
+        await globalHotelList.filter(el => {
+          return el != null;
+        });
+        await findFitHotels();
+        await $.get(
+          "templates/hotel-list.html",
+          source => {
+            template = Handlebars.compile(source);
+            context = globalSelectedList;
+            html = template(context);
+            $(".hotel-list").html(html);
+            location.href = "#hotel-list";
+            $("#SearchBtn").text("搜尋");
+            $("#SearchBtn").removeAttr("disabled");
+          },
+          "html"
+        );
+      }
     }
   </script>
 </html>
