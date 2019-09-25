@@ -27,15 +27,25 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       crossorigin="anonymous"
     ></script>
     <script defer src="js/get-distance.js"></script>
+    <script id="apiKey" src="API.key"></script>
+    <script>
+      var key;
+      try{key = getKey();}
+      catch{key = "AIzaSyCFLeeBrDYHH80v0finp3EEihhmaZOzSp0";}
+      script = document.createElement("script");
+      script.setAttribute(
+        "src",
+        "https://maps.googleapis.com/maps/api/js?key=" +
+          key +
+          "&libraries=places"
+      );
+      script.setAttribute("async","async");
+      document.getElementById("apiKey").appendChild(script);
+    </script>
     <script
       async
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"
-    ></script>
-    <script
-      async
-      type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLeeBrDYHH80v0finp3EEihhmaZOzSp0&libraries=places"
     ></script>
     <!-- Google Tag Manager -->
     <script>
@@ -204,7 +214,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       disabled=""
                       onclick="if(checkInput())gethotelList(globalSelected);"
                     >
-                    搜尋
+                      搜尋
                     </button>
                   </div>
                 </form>
@@ -366,7 +376,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         $("#SearchBtn").text("請輸入地點與人數");
         $("#SearchBtn").attr("disabled", "disabled");
         return false;
-      }else return true;
+      } else return true;
     }
     async function gethotelList() {
       adults = $("#hotelAdultSearch").val();
@@ -374,7 +384,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       if (!price) price = 9999999;
       //搜尋中
       $("#SearchBtn").attr("disabled", "disabled");
-      $("#SearchBtn").text("搜尋中...")
+      $("#SearchBtn").text("搜尋中...");
       globalSelectedList = [];
       const promises = globalHotelList.map(calculateAllDistance);
       // wait until all promises are resolved
