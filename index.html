@@ -20,11 +20,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     />
 
     <!-- js files-->
-    <script id="apiKey" src="API.key"></script>
+    <script id="placeAPIKey" src="API.key"></script>
     <script>
       var key;
       try {
-        key = getKey();
+        key = getPlaceAPIKey();
       } catch {
         key = "AIzaSyCFLeeBrDYHH80v0finp3EEihhmaZOzSp0";
       }
@@ -36,7 +36,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           "&libraries=places"
       );
       script.setAttribute("async", "async");
-      document.getElementById("apiKey").appendChild(script);
+      document.getElementById("placeAPIKey").appendChild(script);
     </script>
     <script
       async
@@ -271,7 +271,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         if (result && result.length > 0) return result[0];
       });
       Handlebars.registerHelper("ImgServer", ID => {
-        return ID % 10 < 6 ? "HotelImages" : "HotelImages2";
+        try {
+          getPlaceAPIKey();
+          return "../HotelImages";
+        } catch {
+          return ID % 10 < 6 ? "/HotelImages" : "/HotelImages2";
+        }
       });
     }
     function preFetchHotelList() {
@@ -361,8 +366,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     async function findFitHotels() {
       //get 50 hotels
       let idx = 0;
-      let maxDistance = 15
-      let pageSize=50;
+      let maxDistance = 15;
+      let pageSize = 50;
       while (
         globalSelectedList.length < pageSize &&
         idx < globalHotelList.length &&
@@ -424,13 +429,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         if (globalSelectedList.length > 0) {
           await $.get(
             "templates/hotel-list.html",
-            source=>renderPage(source),
+            source => renderPage(source),
             "html"
           );
         } else {
           await $.get(
             "templates/no-result.html",
-            source=>renderPage(source),
+            source => renderPage(source),
             "html"
           );
         }
@@ -439,5 +444,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         $("#SearchBtn").removeAttr("disabled");
       }
     }
+    /*
+    TODO:
+    1. Add detail btn
+    2. Add farer range show more button
+    */
   </script>
 </html>
