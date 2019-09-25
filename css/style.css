@@ -825,9 +825,15 @@ h5.bottom {
     color: #FFF;
     margin:0;
 }
-.user-info span{
+.user-info span,.no-result span{
     white-space: nowrap;
     display: inline-block;
+}
+/*-- No results --*/
+.no-result{
+    line-height: normal;
+    color: #FFF;
+    font-weight: 700;
 }
 /*-- /gallery --*/
 section#gallery {
