@@ -15,7 +15,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!-- for-mobile-apps -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="description" content="2019秋冬旅遊補助配合旅宿查詢系統，提供距離、預算、人數查詢功能，提供符合您條件的最佳選擇!" />
+    <meta
+      name="description"
+      content="2019秋冬旅遊補助配合旅宿查詢系統，提供距離、預算、人數查詢功能，提供符合您條件的最佳選擇!"
+    />
 
     <!-- js files-->
     <script id="placeAPIKey" src="API.key"></script>
@@ -62,7 +65,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       })(window, document, "script", "dataLayer", "GTM-TPBCWTB");
     </script>
     <!-- End Google Tag Manager -->
-    <script data-ad-client="ca-pub-5615497197323260" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script
+      data-ad-client="ca-pub-5615497197323260"
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+    ></script>
     <!-- //js files -->
 
     <!-- css files -->
@@ -119,10 +126,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
           <input type="checkbox" id="drop" />
           <ul class="menu ml-auto mt-1">
             <li class="active"><a href="index.html">查詢首頁</a></li>
+            <li class="active"><a href="#notice">注意事項</a></li>
             <li class="active">
               <a
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="external noopener noreferrer"
                 href="https://admin.taiwan.net.tw/Handlers/FileHandler.ashx?fid=422b8323-c438-4e38-b77c-d8b7bb66482f&type=4&no=1"
                 >活動說明</a
               >
@@ -130,7 +138,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <li class="active">
               <a
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="external noopener noreferrer"
                 href="https://fallwintertour.tbroc.gov.tw/customer_apply_page"
                 >活動申請</a
               >
@@ -138,7 +146,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <li class="active">
               <a
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="external noopener noreferrer"
                 href="https://fallwintertour.tbroc.gov.tw/hotel"
                 >參與業者總覽</a
               >
@@ -229,6 +237,39 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!--list-->
     <main class="hotel-list" id="hotel-list"></main>
     <!--\\list-->
+    <!-- banner-bottom -->
+    <section class="some-content py-3" id="notice">
+      <div class="container py-md-5">
+        <div class="row about-vv-top mt-2">
+          <div class="col-lg-6 about-info">
+            <h4 class="title-hny mb-md-5">注意事項</h4>
+            <ol>
+              <li>本站不提供訂房服務，訂房請透過旅宿連絡電話</li>
+              <li>列表所示價格為補助前網路價，僅供比價參考</li>
+              <li>直接電聯旅宿訂房才可補助，網路訂房不適用</li>
+              <li>
+                入住前請先進行<a
+                  rel="external noopener noreferrer"
+                  href="https://fallwintertour.tbroc.gov.tw/customer_apply_page"
+                  >活動申請</a
+                >以確保自身權益
+              </li>
+              <li>
+                其餘事項請見<a
+                  rel="external noopener noreferrer"
+                  href="https://admin.taiwan.net.tw/Handlers/FileHandler.ashx?fid=422b8323-c438-4e38-b77c-d8b7bb66482f&type=4&no=1"
+                  >活動說明</a
+                >，以取得更多資訊
+              </li>
+            </ol>
+          </div>
+          <div class="col-lg-6 about-img mt-md-4 mt-sm-4">
+            <img src="images/ab1.jpg" class="img-fluid" alt="" />
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- //banner-bottom-->
     <!-- //banner -->
     <section class="some-content py-3" id="about">
       <h6 class="title-hny text-center user-info">
@@ -383,25 +424,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     function checkInput() {
       adults = $("#hotelAdultSearch").val();
       price = $("#hotelPriceSearch").val();
-      if (!globalSelected || !adults) {
-        $("#SearchBtn").text("請選擇地點與人數");
-        $("#SearchBtn").attr("disabled", "disabled");
-        return false;
+      if (!globalSelected) {
+        $("#SearchBtn").text("請從列表中選擇地點");
+      } else if (!adults) {
+        $("#SearchBtn").text("請輸入成人人數");
+      } else if (price && price < 500) {
+        $("#SearchBtn").text("預算請大於500");
+      } else if (adults && (adults > 6 || adults < 1)) {
+        $("#SearchBtn").text("成人人數請介於1~6間");
       } else {
-        if (price && price < 500) {
-          $("#SearchBtn").text("預算請大於500");
-          $("#SearchBtn").attr("disabled", "disabled");
-          return false;
-        } else if (adults && (adults > 6 || adults < 1)) {
-          $("#SearchBtn").text("成人人數請介於1~6間");
-          $("#SearchBtn").attr("disabled", "disabled");
-          return false;
-        } else {
-          $("#SearchBtn").text("搜尋");
-          $("#SearchBtn").removeAttr("disabled");
-        }
+        $("#SearchBtn").text("搜尋");
+        $("#SearchBtn").removeAttr("disabled");
         return true;
       }
+      $("#SearchBtn").attr("disabled", "disabled");
+      return false;
     }
     function renderPage(source) {
       template = Handlebars.compile(source);
