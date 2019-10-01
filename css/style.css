@@ -606,6 +606,16 @@ section#notice {
     color: #8efffa;
     text-decoration: underline;
 }
+.scupioadslot{
+    min-height:100px;
+    background-color: #f4b200
+}
+/*-- Ad --*/
+@media (max-width: 480px){
+    .scupioadslot{
+        min-height:280px;
+    }
+}
 /*-- /banner-bottom --*/
 section#about {
     background: #A3A3A3;
@@ -862,7 +872,6 @@ h5.bottom {
 section#gallery {
     position: relative;
 }
-
 .gal-img {
     padding: 10px;
 }
