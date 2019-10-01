@@ -607,23 +607,11 @@ section#notice {
     color: #8efffa;
     text-decoration: underline;
 }
-#mobile{
-    display:none !important;
-}
 body{
     background-color: #f4b200
 }
 .scupioadslot{
     margin-top: 5px;
-}
-/*-- Ad --*/
-@media (max-width: 480px){
-    #desktop{
-        display: none !important;
-    }
-    #mobile{
-        display:inline-block !important;
-    }
 }
 /*-- /banner-bottom --*/
 section#about {
