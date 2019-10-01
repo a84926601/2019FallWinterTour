@@ -606,14 +606,19 @@ section#notice {
     color: #8efffa;
     text-decoration: underline;
 }
-.scupioadslot{
-    min-height:100px;
+#mobile{
+    display:none !important;
+}
+body{
     background-color: #f4b200
 }
 /*-- Ad --*/
 @media (max-width: 480px){
-    .scupioadslot{
-        min-height:280px;
+    #desktop{
+        display: none !important;
+    }
+    #mobile{
+        display:inline-block !important;
     }
 }
 /*-- /banner-bottom --*/
