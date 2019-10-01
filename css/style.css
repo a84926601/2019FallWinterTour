@@ -612,6 +612,9 @@ section#notice {
 body{
     background-color: #f4b200
 }
+.scupioadslot{
+    margin: 5px 0 5px 0;
+}
 /*-- Ad --*/
 @media (max-width: 480px){
     #desktop{
