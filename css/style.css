@@ -610,8 +610,22 @@ section#notice {
 body{
     background-color: #f4b200
 }
+#desktop{
+    position: fixed !important;
+    width:100%;
+    height: 90px;
+    z-index:40;
+    right: 0;
+    bottom: 0;
+}
+@media(max-width:480px){
+    #desktop{
+        height:50px !important;
+    }
+}
 .scupioadslot{
-    margin-top: 5px;
+    margin-top: 0px;
+    text-align: center;
 }
 /*-- /banner-bottom --*/
 section#about {
@@ -1444,6 +1458,8 @@ p.copy-right-grids a {
 .copy-right {
     letter-spacing: 1px;
     font-size: 15px;
+    padding-top:1rem;
+    padding-bottom:7rem;
     color: #999;
 }
 
@@ -1461,7 +1477,10 @@ p.copy-right-grids a {
 /*-- move top --*/
 
 .move-top {
-    position: relative;
+    position: fixed;
+    right: 3px;
+    bottom: 3px;
+    z-index:41;
 }
 
 a.move-top {
