@@ -585,7 +585,6 @@ h3.heading1 {
 }
 section#notice {
     background: #f4b200;
-    padding-top: 0 !important;
 }
 #notice ol {
     padding-left: 1.8em;
@@ -858,6 +857,9 @@ h5.bottom {
 }
 /*-- //about bottom --*/
 /*-- hotel list --*/
+.hotel-list{
+    background-color:#FFF;
+}
 .card, .card-product{
     margin: 1rem 0 1rem 0;
 }
@@ -1477,6 +1479,7 @@ p.copy-right-grids a {
 /*-- move top --*/
 
 .move-top {
+    opacity:0.85;
     position: fixed;
     right: 3px;
     bottom: 3px;
