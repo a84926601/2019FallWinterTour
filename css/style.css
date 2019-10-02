@@ -507,12 +507,9 @@ h4.b-w3ltxt {
     background: #f1f1f1;
     letter-spacing: 0.5px;
     padding: 14px 20px;
-    width: 49%;
+    width: 100%;
     box-sizing: border-box;
     margin-bottom: 15px;
-}
-.form-style-w3layout input[type="number"]{
-    width: 24.5%;
 }
 .form-style-w3layout button.btn {
     color: #fff;
@@ -1627,15 +1624,25 @@ h3.heading {
     line-height: 55px;
 }
 }
-@media(max-width:770px) {
-	.padding {
-    padding: 1em;
+.form-style-w3layout div{
+    color: #FFF;
+    display:inline-block;
 }
-.form-style-w3layout input[type="text"], .form-style-w3layout input[type="email"], .form-style-w3layout input[type="password"], select {
-    width: 100%;
+.add-search{
+    width:24.5%
 }
-.form-style-w3layout input[type="number"]{
+#LocationSearch{
     width:49%;
+}
+@media(max-width:770px) {
+.add-search{
+    width:49.3%
+}
+#LocationSearch{
+    width:100%;
+}
+.padding {
+    padding: 1em;
 }
 .read-more-button {
     margin-bottom: 2em;

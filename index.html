@@ -191,32 +191,41 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <form>
                   <h5 class="mb-3">想要去哪裡? 快搜尋看看</h5>
                   <div class="form-style-w3layout">
-                    <input
-                      placeholder="輸入想去的地點"
-                      id="hotelLocationSearch"
-                      type="text"
-                      required=""
-                      autocomplete="off"
-                      oninput="checkInput()"
-                    />
-                    <input
-                      placeholder="成人人數"
-                      id="hotelAdultSearch"
-                      type="number"
-                      min="1"
-                      max="6"
-                      required=""
-                      autocomplete="off"
-                      oninput="checkInput()"
-                    />
-                    <input
-                      placeholder="最高預算"
-                      id="hotelPriceSearch"
-                      type="number"
-                      min="500"
-                      autocomplete="off"
-                      oninput="checkInput()"
-                    />
+                    <div id="LocationSearch">
+                        <label for="hotelLocationSearch">輸入想去的地點</label><br />
+                        <input
+                        placeholder="臺東火車站"
+                        id="hotelLocationSearch"
+                        type="text"
+                        required=""
+                        autocomplete="off"
+                        oninput="checkInput()"
+                      />
+                    </div>
+                    <div class="add-search">
+                        <label for="hotelAdultSearch">成人人數</label><br />
+                        <input
+                        placeholder="2"
+                        id="hotelAdultSearch"
+                        type="number"
+                        min="1"
+                        max="6"
+                        required=""
+                        autocomplete="off"
+                        oninput="checkInput()"
+                      />
+                    </div>
+                    <div class="add-search">
+                        <label for="hotelPriceSearch">最高預算</label><br />
+                        <input
+                        placeholder="1200"
+                        id="hotelPriceSearch"
+                        type="number"
+                        min="500"
+                        autocomplete="off"
+                        oninput="checkInput()"
+                      />
+                    </div>
                     <button
                       id="SearchBtn"
                       Class="btn"
