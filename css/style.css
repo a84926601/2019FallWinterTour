@@ -1640,7 +1640,7 @@ h3.heading {
 }
 @media(max-width:770px) {
 .add-search{
-    width:49.3%
+    width:49%
 }
 #LocationSearch{
     width:100%;
